@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/ceruleanlabs/ceruleanlabs.com.svg?branch=master)](https://travis-ci.com/ceruleanlabs/ceruleanlabs.com)
+
 # ceruleanlabs.com
 
 ## Setup
