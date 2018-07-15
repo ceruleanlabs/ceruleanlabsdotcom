@@ -1,6 +1,8 @@
 # config valid for current version and patch releases of Capistrano
 lock "~> 3.11.0"
 
+set :rbenv_ruby, File.read(".ruby-version").strip
+
 set :application, "ceruleanlabs"
 set :repo_url, "https://github.com/ceruleanlabs/ceruleanlabs.com.git"
 
