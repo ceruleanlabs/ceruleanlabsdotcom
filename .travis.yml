@@ -1,17 +1,18 @@
 language: ruby
 cache:
-- bundler
-bundler_args: --without production
+  - bundler
+bundler_args: "--without production"
 services:
   - postgresql
 script:
   - bundle exec rake db:setup
   - bundle exec rake db:migrate
   - bundle exec rake test
-deploy:
-  - provider: script
-    script: cap staging deploy
-    on:
-      branch: master
+after_success:
+  - openssl aes-256-cbc -k $DEPLOY_KEY -in config/deploy_id_rsa_enc_travis -d -a -out config/deploy_id_rsa
+  - [[ $TRAVIS_BRANCH = 'master' ]] && bundle exec staging deploy
 notifications:
   email: false
+env:
+  global:
+    secure: P6i/5MaAlPu6e/6Hzk1G5iR2ezqaUvSoZWwAph3DAJ+HqiaQ3cEPz394QD8B26RwG11S7w1OneHYfJU6z6y5nPqX9ohABUZSLtX2vZmG0jLq5i+l/XbS4eXprHP7sWaB5dcuKbIp6KlhN/seMN/jwm29Iyr8WuMP2+RaTJPEQcITaw1RZaCE070JCxCxpCL5Xo7sw8dDotiLoW6D1Fx955zo0tPkmUEV1D15srD9ggSNMdBdHFnGsHVP+2+GaL2KZcQfroSTzQY7l1gYT1bJbcRwc1inEkAYzJTR7udyd6/7+dUsLQYqsqMNjeqwqV72daYukl01RSI9TAgf5iD+jnjzADb/PZTL1zSHSx6TFzNV5MJTAmZKikjXasngcHB20hln/z6UjIScbdYP6A+Nr5UFQBFjDLdo+IAJXum2ZUblwnrx7fzQTaw9TfwEMc6Kfhl1RQJO5RoYmzK+GFHGwX5XXkvBugmNbW61wervQjfjF60/Za/rAPFNxVia0qMT7yjRYjcUKGgY32tEvYCpKbTxOaJZTbRTgd6D0yKYRD1X7xnJhzGroWmTDNQz0hyFoVl+KR7YaWW7RIAMMJBeAWd4Afq+mdJ0Dad1zTf/zbzqPSK08BrKl7JjMxDRpBgEFW412Yx+WpOp0EDu/4crnMMK2w2lsGLj+zjxzSidWkg=
